@@ -18,6 +18,11 @@ var app = angular.module('customersApp', []);
                 controller: 'customersController',
                 templateUrl: 'app/views/customers.html'
             })
+        //route parameter
+           .when('/orders/:customerId', {
+                controller: 'ordersController',
+                templateUrl: 'app/views/orders.html'
+            })
             .otherwise({redirectTo:'/'});
     });
         
