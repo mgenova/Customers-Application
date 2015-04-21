@@ -7,31 +7,22 @@ var app = angular.module('customersApp', []);
 
 /* Option 2 &3: app is no longer in global scope  */
  
-(function(){
- 
- 
+(function(){ 
     var app = angular.module('customersApp',['ngRoute']);
     
-    app.config(function($routeProvider) {
+    app.config(function($routeProvider){
         $routeProvider
             .when('/', {
                 controller: 'customersController',
                 templateUrl: 'app/views/customers.html'
             })
-        //route parameter
+            //route parameter
            .when('/orders/:customerId', {
                 controller: 'ordersController',
                 templateUrl: 'app/views/orders.html'
             })
             .otherwise({redirectTo:'/'});
-    });
-        
-        
-        
-        
-        
-        
-            
+    });                  
 }());
  
 
