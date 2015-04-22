@@ -1,27 +1,62 @@
 /*option 3: preferred approach */
 
-(function(){
-    var customersController = function($scope, customersFactory, appSettings ){
-            $scope.sortBy = 'name';
-            $scope.reverse = false;
-            $scope.customers = [];
-            $scope.appSettings = appSettings;
-        
-            function init() {
-                $scope.customers = customersFactory.getCustomers(); //asynchronous call
-            }
-        
+(function() {
 
-            init();
-           
-            $scope.doSort = function(probName){
-                   $scope.sortBy= propName;
-                   $scope.reverse = !$scope.reverse;
-            };
+    var customersController = function($scope, $log, customersFactory, appSettings) {
+        $scope.sortBy = 'name';
+        $scope.reverse = false;
+        $scope.customers = [];
+        $scope.appSettings = appSettings;
+
+        function init() {
+            // $scope.customers = customersFactory.getCustomers();   // syncronous call
+            customersFactory.getCustomers()
+                .success(function(customers) {
+                    $scope.customers = customers;
+                })
+                .error(function(data, status, headers, config) {
+                    $log.log(data.error + '' + status);
+                //console.log('there was an error');
+                });
+        }
+
+        init();
+
+        $scope.doSort = function(propName) {
+            $scope.sortBy = propName;
+            $scope.reverse = !$scope.reverse;
+        };
         
-    };
+        
+        $scope.deleteCustomer = function (customerId) {
+            customersFactory.deleteCustomer(customerId)
+                .success(function (status) {
+                    if (status) {
+                        for (var i = 0, len = $scope.customers.length; i < len; i++) {
+                            if ($scope.customers[i].id === customerId) {
+                                $scope.customers.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        $window.alert('Unable to delete customer');
+                    }
+                })
+                .error(function(data, status, headers, config) {
+                    $log.log(data.error + '' + status);
+                    //console.log('there was an error');
+                });
+            };
+    };  
+         
+   
     //for minifier
-    customersController.$inject = ['$scope', 'customersFactory', 'appSettings'];
+    // If we used Minification, the $scope will get renamed and nothing would work.
+    // To Fix: Use Parameter Injection Technique
+    // eg. CustomersController.$inject = ['$scope', 'foo', 'bar'];
+    
+    customersController.$inject = ['$scope', '$log', 'customersFactory', 'appSettings'];
     
     angular.module('customersApp')
         .controller('customersController', customersController);

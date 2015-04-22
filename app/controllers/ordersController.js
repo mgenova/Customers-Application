@@ -2,11 +2,16 @@
     
     var ordersController = function($scope, $routeParams, customersFactory){
         var customerId = $routeParams.customerId;
-        $scope.customers= null; 
+        $scope.customer= null; 
    
         function init() {
-            $scope.customers = customersFactory.getCustomer(customerId);
-                
+            customersFactory.getCustomer(customerId)
+                    .success(function(customer) {
+                        $scope.customer = customer;
+                    })
+                    .error(function(data, status, headers, config){
+                        console.log('There was an error');
+                    });
         }
         init();
 

@@ -8,6 +8,7 @@
 
 // Preview button configuration
   "preview": {
+        "Express Server": "http://{{domain}}:8080/",
         "Project Index (static)": "https://{{domain}}/{{index}}",
         "Current File (static)": "https://{{domain}}/{{filepath}}",
         "Box URL": "http://{{domain}}:3000/",

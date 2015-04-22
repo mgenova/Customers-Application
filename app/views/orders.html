@@ -1,11 +1,11 @@
-<h2>{{ customers.name}}'s Orders</h2>
+<h2>{{ customer.name}}'s Orders</h2>
 
-<table>
+<table class="table table-stripe">
     <tr>
         <th>Product</th>
         <th>Total</th>
     </tr>
-    <tr ng-repeat="order in customers.orders">
+    <tr ng-repeat="order in customer.orders">
         <td>{{ order.product }}</td>
         <td>{{ order.total | currency }}</td>
     </tr>
